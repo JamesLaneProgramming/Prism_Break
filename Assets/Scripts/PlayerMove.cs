@@ -99,8 +99,11 @@ public class PlayerMove : MonoBehaviour
 
     void InitJump()
     {
-        jumpTime = Time.time;
-        jump = true;
+        if (!jump)
+        {
+            jumpTime = Time.time;
+            jump = true;
+        }
     }
 
     void CalcJump()
@@ -136,6 +139,7 @@ public class PlayerMove : MonoBehaviour
     void Grapple()
     {
         Grapple g = grapple.GetComponent<Grapple>();
+
         if (!g.GetLaunched())
         {
             g.Launch();
