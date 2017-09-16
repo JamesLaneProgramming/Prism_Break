@@ -57,8 +57,10 @@ public class PlayerMove : MonoBehaviour
         {
             float xMove = Input.GetAxis("Horizontal");
             float zMove = Input.GetAxis("Vertical");
+            
+            Vector3 moveDir = transform.TransformDirection(xMove, 0, zMove);
 
-            moveTarget = Vector3.MoveTowards(transform.position, transform.localPosition + new Vector3(xMove, 0, zMove), moveSpeed * Time.deltaTime);
+            moveTarget = Vector3.MoveTowards(transform.position, transform.position + moveDir, moveSpeed * Time.deltaTime);
         }
     }
 
