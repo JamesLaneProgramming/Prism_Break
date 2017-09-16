@@ -41,16 +41,16 @@ public class Blue_Boss : Boss_Base_Class {
         base.continue_Attack();
     }
 
-    public override void continue_Recover()
-    {
-        wait(2f, set_Has_Recovered);
-        base.continue_Recover();
-    }
-
-    private void set_Has_Recovered()
-    {
-        has_Recovered = true;
-    }
+    ///public override void continue_Recover()
+    ///{
+    ///    wait(2f, set_Has_Recovered);
+    ///    base.continue_Recover();
+    ///}
+    ///
+    ///private void set_Has_Recovered()
+    ///{
+    ///    has_Recovered = true;
+    ///}
 
     public override void end_Attack()
     {
@@ -61,7 +61,7 @@ public class Blue_Boss : Boss_Base_Class {
     public void grapple()
     {
         my_Animator.SetBool("Is_Grappled", true);
-        StartCoroutine(wait(vulnerable_Time, closeGrapple));
+        ///StartCoroutine(wait(vulnerable_Time, closeGrapple));
     }
 
     public void closeGrapple()

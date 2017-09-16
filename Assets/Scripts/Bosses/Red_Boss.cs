@@ -37,20 +37,20 @@ public class Red_Boss : Boss_Base_Class {
         base.continue_Attack();
     }
 
-    public override void start_Recover()
-    {
-        target_Position = transform.position - targetDirection;
-        base.start_Recover();
-    }
-    public override void continue_Recover()
-    {
-        transform.position = Vector3.MoveTowards(transform.position, target_Position, 0.1f);
-        if((transform.position - target_Position).magnitude <= 0.2f)
-        {
-            has_Recovered = true;
-        }
-        base.continue_Recover();
-    }
+    ///public override void start_Recover()
+    ///{
+    ///    target_Position = transform.position - targetDirection;
+    ///    base.start_Recover();
+    ///}
+    ///public override void continue_Recover()
+    ///{
+    ///    transform.position = Vector3.MoveTowards(transform.position, ///target_Position, 0.1f);
+    ///    if((transform.position - target_Position).magnitude <= 0.2f)
+    ///    {
+    ///        has_Recovered = true;
+    ///    }
+    ///    base.continue_Recover();
+    ///}
 
     public void OnCollisionEnter(Collision collided_Object)
     {

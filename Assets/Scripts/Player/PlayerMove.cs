@@ -58,7 +58,7 @@ public class PlayerMove : MonoBehaviour
             float xMove = Input.GetAxis("Horizontal");
             float zMove = Input.GetAxis("Vertical");
 
-            moveTarget = Vector3.MoveTowards(transform.position, transform.position + new Vector3(xMove, 0, zMove), moveSpeed * Time.deltaTime);
+            moveTarget = Vector3.MoveTowards(transform.position, transform.localPosition + new Vector3(xMove, 0, zMove), moveSpeed * Time.deltaTime);
         }
     }
 
@@ -88,6 +88,12 @@ public class PlayerMove : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             Grapple();
+            Grapple g = grapple.GetComponent<Grapple>();
+
+            if (!g.GetLaunched())
+            {
+                g.Launch();
+            }
             //canMove = false;
         }
     }
@@ -138,12 +144,7 @@ public class PlayerMove : MonoBehaviour
     
     void Grapple()
     {
-        Grapple g = grapple.GetComponent<Grapple>();
-
-        if (!g.GetLaunched())
-        {
-            g.Launch();
-        }
+        
     }
 
     void Block()

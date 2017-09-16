@@ -10,6 +10,9 @@ public class CameraOrbitWithZoom : MonoBehaviour
     public float distanceMin = .5f;
     public float distanceMax = 15f;
 
+    public float maxClamp = 90f;
+    public float minClamp = 10f;
+
     private float distance = 0f;
     private float x = 0.0f;
     private float y = 0.0f;
@@ -35,6 +38,16 @@ public class CameraOrbitWithZoom : MonoBehaviour
     {
         x -= Input.GetAxis("Mouse Y") * sensitivity;
         y += Input.GetAxis("Mouse X") * sensitivity;
+
+        if (x > maxClamp)
+        {
+            x = maxClamp;
+        }
+
+        if (x < minClamp)
+        {
+            x = minClamp;
+        }
     }
 
     void Movement()
@@ -52,6 +65,7 @@ public class CameraOrbitWithZoom : MonoBehaviour
 
             Vector3 position = target.position + invDistanceZ;
 
+            target.transform.rotation = Quaternion.Euler(0, y, 0);
             transform.rotation = rotation;
             transform.position = position;
         }

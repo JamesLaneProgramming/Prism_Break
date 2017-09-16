@@ -18,20 +18,20 @@ public class Orange_Boss : Boss_Base_Class
         my_Rigidbody = GetComponent<Rigidbody>();
     }
 
-    public override void start_Recover()
-    {
-        target = new Vector3(transform.position.x, height, transform.position.z);
-        base.start_Recover();
-    }
-    public override void continue_Recover()
-    {
-        print(target);
-        transform.position = Vector3.MoveTowards(transform.position, target, recover_Speed);
-        if (transform.position == target)
-        {
-            has_Recovered = true;
-        }
-    }
+    ///public override void start_Recover()
+    ///{
+    ///    target = new Vector3(transform.position.x, height, ///transform.position.z);
+    ///    base.start_Recover();
+    ///}
+    ///public override void continue_Recover()
+    ///{
+    ///    print(target);
+    ///    transform.position = Vector3.MoveTowards(transform.position, ///target, recover_Speed);
+    ///    if (transform.position == target)
+    ///    {
+    ///        has_Recovered = true;
+    ///    }
+    ///}
 
     public override void continue_Moving()
     {
@@ -51,6 +51,6 @@ public class Orange_Boss : Boss_Base_Class
 
     private void OnCollisionEnter(Collision collided_Object)
     {
-        StartCoroutine(wait(time_Before_Recover, end_Attack));
+        ///StartCoroutine(wait(time_Before_Recover, end_Attack));
     }
 }
