@@ -49,6 +49,16 @@ public class CameraOrbitWithZoom : MonoBehaviour
         {
             x = minClamp;
         }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            HideCursor(true);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            HideCursor(false);
+        }
     }
 
     void Movement()
@@ -79,6 +89,7 @@ public class CameraOrbitWithZoom : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
+
         else
         {
             Cursor.lockState = CursorLockMode.None;

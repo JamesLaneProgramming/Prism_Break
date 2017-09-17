@@ -24,7 +24,7 @@ public class Red_Boss : Boss_Base_Class {
 
     public override void continue_Moving()
     {
-        Vector3 target_Rotation = Vector3.RotateTowards(transform.forward, (player.transform.position - transform.position).normalized, 1 * rotation_Speed, 1);
+        Vector3 target_Rotation = Vector3.RotateTowards(transform.forward, new Vector3((player.transform.position.x - transform.position.x), 0, (player.transform.position.z - transform.position.z)).normalized, 1 * rotation_Speed, 1);
         transform.rotation = Quaternion.LookRotation(target_Rotation);
         transform.position = Vector3.MoveTowards(transform.position, calculate_Target_Position(player), 1);
         base.continue_Moving();
@@ -32,7 +32,7 @@ public class Red_Boss : Boss_Base_Class {
 
     public override void start_Attack()
     {
-        targetDirection = (player.transform.position - transform.position);
+        targetDirection = new Vector3((player.transform.position.x - transform.position.x), 0, (player.transform.position.z - transform.position.z));
         base.start_Attack();
     }
     public override void continue_Attack()

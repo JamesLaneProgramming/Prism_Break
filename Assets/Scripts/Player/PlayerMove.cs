@@ -67,6 +67,7 @@ public class PlayerMove : MonoBehaviour
         if (col.gameObject.layer == LayerMask.NameToLayer("Environment"))
         {
             jump = false;
+            anim.SetTrigger("Land");
         }
 
         if (col.gameObject.GetComponent<Boss_Base_Class>())
@@ -131,7 +132,7 @@ public class PlayerMove : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             ThrowBoomerang();
-            //canMove = false;
+            canMove = false;
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
@@ -143,7 +144,7 @@ public class PlayerMove : MonoBehaviour
             {
                 g.Launch();
             }
-            //canMove = false;
+            canMove = false;
         }
     }
 
@@ -160,11 +161,11 @@ public class PlayerMove : MonoBehaviour
 
             punchTimer = StartCoroutine(PunchTimer());
             aState++;
+            anim.SetBool("Idle", false);
 
             switch (aState)
             {
                 case AttackState.NONATTACK:
-                    anim.SetTrigger("Idle");
 
                     break;
 
@@ -189,12 +190,15 @@ public class PlayerMove : MonoBehaviour
     void Roll()
     {
         StartCoroutine(RollTimer());
+        aState = AttackState.NONATTACK;
     }
 
     void InitJump()
     {
         if (!jump)
         {
+            aState = AttackState.NONATTACK;
+            anim.SetTrigger("Jump");
             jumpTime = Time.time;
             jump = true;
         }
@@ -206,6 +210,7 @@ public class PlayerMove : MonoBehaviour
         {
             float currentTime = Time.time - jumpTime;
             yOffset = (jumpInitial * currentTime) + ((Physics.gravity.y * (currentTime * currentTime) / 2));
+            anim.SetFloat("Fall", yOffset);
         }
     }
 
@@ -245,13 +250,21 @@ public class PlayerMove : MonoBehaviour
         // Invis Material. Timer?
     }
 
+    void FallCheck()
+    {
+        if (GetComponent<Rigidbody>().velocity.y < 0)
+        {
+            anim.SetFloat("Fall", -1);
+        }
+    }
+
     IEnumerator PunchTimer()
     {
         yield return new WaitForSeconds(0.1f);
         punchBox.SetActive(false);
-        yield return new WaitForSeconds(animClips[(int)aState - 1].length);
+        yield return new WaitForSeconds(animClips[(int)aState - 1].length * punchWindow);
         aState = AttackState.NONATTACK;
-        anim.SetTrigger("Idle");
+        anim.SetBool("Idle", true);
     }
 
     IEnumerator RollTimer()

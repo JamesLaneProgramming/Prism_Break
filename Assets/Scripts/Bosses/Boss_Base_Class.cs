@@ -190,6 +190,7 @@ public class Boss_Base_Class : MonoBehaviour {
             if(health == 0)
             {
                 Destroy(gameObject);
+                GameObject.Find("Canvas").GetComponent<UIScript>().show_Credits();
             }
         }
     }
