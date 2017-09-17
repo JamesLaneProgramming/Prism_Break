@@ -15,12 +15,15 @@ public class UIScript : MonoBehaviour {
         background_Panel.SetActive(false);
         start_Button.SetActive(false);
         exit_Button.SetActive(false);
+        Camera.main.GetComponent<CameraOrbitWithZoom>().enabled = true;
     }
 
     public void show_Credits()
     {
         background_Panel.SetActive(true);
         credits_Panel.SetActive(true);
+        Camera.main.GetComponent<CameraOrbitWithZoom>().enabled = false;
+        exit_Button.SetActive(true);
     }
 
     public void exit()
