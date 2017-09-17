@@ -20,13 +20,14 @@ public class Grapple : MonoBehaviour
     Vector3 moveTarget, playerMoveTarget, enemyMoveTarget, initPos, maxPos, grapOffset;
     GameObject player, grapHit;
 
-    Vector3 pos;
-
     public bool GetLaunched() { return launched; }
 
-    public void SetPlayer(GameObject player) { this.player = player; }
-
-    // Test
+    public void SetPlayer(GameObject player)
+    {
+        this.player = player;
+        transform.position = player.transform.position;
+    }
+    
     void OnEnable()
     {
         if (player != null)

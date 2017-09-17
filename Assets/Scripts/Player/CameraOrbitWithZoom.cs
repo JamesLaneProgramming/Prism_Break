@@ -6,6 +6,7 @@ public class CameraOrbitWithZoom : MonoBehaviour
     public Transform target;
     public float panSpeed = 5f;
     public float sensitivity = 1f;
+    public float heightOffset = 3f;
 
     public float distanceMin = .5f;
     public float distanceMax = 15f;
@@ -63,7 +64,7 @@ public class CameraOrbitWithZoom : MonoBehaviour
             Vector3 invDistanceZ = new Vector3(0, 0, -distance);
             invDistanceZ = rotation * invDistanceZ;
 
-            Vector3 position = target.position + invDistanceZ;
+            Vector3 position = target.position + invDistanceZ + (transform.up * heightOffset);
 
             target.transform.rotation = Quaternion.Euler(0, y, 0);
             transform.rotation = rotation;

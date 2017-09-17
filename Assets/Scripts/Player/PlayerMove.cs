@@ -2,22 +2,41 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum AttackState
+{
+    NONATTACK,
+    RIGHT,
+    LEFT,
+    UPPER
+}
+
 public class PlayerMove : MonoBehaviour
 {
     [SerializeField]
-    float moveSpeed, rollSpeed, rollTime, jumpInitial;
+    int health;
+    [SerializeField]
+    float moveSpeed, punchWindow, rollSpeed, rollTime, jumpInitial;
     [SerializeField]
     int boomerangCount;
+    [SerializeField]
+    Animator anim;
+    [SerializeField]
+    AnimationClip[] animClips;
 
     bool canMove, jump;
+    AttackState aState;
     float jumpTime, yOffset;
     Vector3 moveTarget;
-    GameObject grapple;
+    Coroutine punchTimer;
+    GameObject punchBox, grapple;
     GameObject[] boomerangs;
 
     void Start()
     {
         canMove = true;
+        aState = AttackState.NONATTACK;
+        moveTarget = transform.position;
+        punchBox = transform.GetChild(0).gameObject;
         boomerangs = new GameObject[boomerangCount];
         GameObject grappleObj = Resources.Load<GameObject>("Prefabs/Grapple");
         grapple = Instantiate(grappleObj);
@@ -49,6 +68,16 @@ public class PlayerMove : MonoBehaviour
         {
             jump = false;
         }
+
+        if (col.gameObject.GetComponent<Boss_Base_Class>())
+        {
+            health--;
+            if(health == 0)
+            {
+                //GameOver
+                Destroy(gameObject);
+            }
+        }
     }
 
     void CalcMove()
@@ -57,8 +86,21 @@ public class PlayerMove : MonoBehaviour
         {
             float xMove = Input.GetAxis("Horizontal");
             float zMove = Input.GetAxis("Vertical");
-            
+
+            anim.SetFloat("Speed", Mathf.Abs(xMove) > 0.2f || Mathf.Abs(zMove) > 0.2f ? Mathf.Max(Mathf.Abs(xMove), Mathf.Abs(zMove)) : 1);
+            anim.SetBool("Run", Mathf.Abs(xMove) > 0.2f || Mathf.Abs(zMove) > 0.2f ? true : false);
+
             Vector3 moveDir = transform.TransformDirection(xMove, 0, zMove);
+
+            if (xMove != 0)
+            {
+                transform.GetChild(1).LookAt(transform.position + moveDir);
+            }
+
+            else
+            {
+                transform.GetChild(1).LookAt(transform.position + transform.forward);
+            }
 
             moveTarget = Vector3.MoveTowards(transform.position, transform.position + moveDir, moveSpeed * Time.deltaTime);
         }
@@ -71,6 +113,11 @@ public class PlayerMove : MonoBehaviour
 
     void Inputs()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Attack();
+        }
+
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             Roll();
@@ -97,6 +144,45 @@ public class PlayerMove : MonoBehaviour
                 g.Launch();
             }
             //canMove = false;
+        }
+    }
+
+    void Attack()
+    {
+        if (aState != AttackState.UPPER)
+        {
+            punchBox.SetActive(true);
+
+            if (punchTimer != null)
+            {
+                StopCoroutine(punchTimer);
+            }
+
+            punchTimer = StartCoroutine(PunchTimer());
+            aState++;
+
+            switch (aState)
+            {
+                case AttackState.NONATTACK:
+                    anim.SetTrigger("Idle");
+
+                    break;
+
+                case AttackState.RIGHT:
+                    anim.SetTrigger("Right Punch");
+
+                    break;
+
+                case AttackState.LEFT:
+                    anim.SetTrigger("Left Punch");
+
+                    break;
+
+                case AttackState.UPPER:
+                    anim.SetTrigger("Uppercut");
+
+                    break;
+            }
         }
     }
 
@@ -157,6 +243,15 @@ public class PlayerMove : MonoBehaviour
     void Invis()
     {
         // Invis Material. Timer?
+    }
+
+    IEnumerator PunchTimer()
+    {
+        yield return new WaitForSeconds(0.1f);
+        punchBox.SetActive(false);
+        yield return new WaitForSeconds(animClips[(int)aState - 1].length);
+        aState = AttackState.NONATTACK;
+        anim.SetTrigger("Idle");
     }
 
     IEnumerator RollTimer()

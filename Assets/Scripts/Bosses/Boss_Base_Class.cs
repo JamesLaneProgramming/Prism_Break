@@ -12,6 +12,7 @@ public enum BOSS_STATE
 
 public class Boss_Base_Class : MonoBehaviour {
 
+    public int health;
     private float movement_Radius;
     [Range(0, 1)]
     public float movement_Speed;
@@ -46,7 +47,6 @@ public class Boss_Base_Class : MonoBehaviour {
     
     private void FixedUpdate()
     {
-        print(current_Boss_State);
         switch (current_Boss_State)
         {
             case BOSS_STATE.idle:
@@ -180,5 +180,17 @@ public class Boss_Base_Class : MonoBehaviour {
         yield return new WaitForSeconds(time);
         functionToRun();
         functionToRun -= _functionToRun;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.GetComponent<PlayerMove>())
+        {
+            health--;
+            if(health == 0)
+            {
+                Destroy(gameObject);
+            }
+        }
     }
 }
