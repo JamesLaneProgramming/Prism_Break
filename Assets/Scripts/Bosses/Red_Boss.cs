@@ -17,7 +17,7 @@ public class Red_Boss : Boss_Base_Class {
     [Range(0, 0.1f)]
     public float rotation_Speed;
 
-    private void Awake()
+    private void Start()
     {
         my_Rigidbody = GetComponent<Rigidbody>();
     }
@@ -66,6 +66,7 @@ public class Red_Boss : Boss_Base_Class {
 
     public void OnCollisionEnter(Collision collided_Object)
     {
+        //base.OnCollisionEnter(collided_Object);
         if(collided_Object.gameObject.layer == LayerMask.NameToLayer("Environment"))
         {
             is_Stunned = true;

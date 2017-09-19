@@ -25,7 +25,6 @@ public class Orange_Boss : Boss_Base_Class
     }
     public override void continue_Recover()
     {
-        print(target);
         transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, height, transform.position.z), recover_Speed);
         if (transform.position == target)
         {

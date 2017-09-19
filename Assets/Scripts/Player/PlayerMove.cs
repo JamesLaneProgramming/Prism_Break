@@ -76,7 +76,7 @@ public class PlayerMove : MonoBehaviour
             if(health == 0)
             {
                 //GameOver
-                Destroy(gameObject);
+                GameObject.Find("Canvas").GetComponent<UIScript>().show_Credits();
             }
         }
     }

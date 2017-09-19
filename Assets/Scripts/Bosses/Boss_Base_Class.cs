@@ -182,15 +182,15 @@ public class Boss_Base_Class : MonoBehaviour {
         functionToRun -= _functionToRun;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public virtual void OnTriggerEnter(Collider collision)
     {
-        if(collision.gameObject.GetComponent<PlayerMove>())
+        if(collision.gameObject.tag == "Player")
         {
             health--;
-            if(health == 0)
+            if(health <= 0)
             {
                 Destroy(gameObject);
-                GameObject.Find("Canvas").GetComponent<UIScript>().show_Credits();
+                
             }
         }
     }
